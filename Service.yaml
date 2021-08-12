@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ass-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ass-deployment
+  template:
+    metadata:
+      labels:
+        app: ass-deployment
+    spec:
+      containers:
+      - name: ass-deployment
+        image: ass-image:v2
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ass-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: ass-deployment
+  ports:
+  - port: 5000
+    targetPort: 5000
